@@ -2,26 +2,16 @@ class Solution {
 public:
     int findLength(vector<int>& a, vector<int>& b) {
         int n = a.size(), m = b.size();
+        vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
         int ans = 0;
-
-        for (int d = -(m - 1); d <= n - 1; d++) {
-            int i = max(0, d);
-            int j = max(0, -d);
-
-            int cur = 0;
-
-            while (i < n && j < m) {
-                if (a[i] == b[j]) {
-                    cur++;
-                    ans = max(ans, cur);
-                } else {
-                    cur = 0;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                if (a[i - 1] == b[j - 1]) {
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                    ans = max(ans, dp[i][j]);
                 }
-                i++;
-                j++;
             }
         }
-
         return ans;
     }
 };
