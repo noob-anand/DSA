@@ -1,25 +1,17 @@
 class Solution {
 public:
-    int f(int i, int j, string& word1, string& word2, vector<vector<int>>& dp) {
-        if (i < 0 || j < 0)
-            return 0;
-        if (dp[i][j] != -1)
-            return dp[i][j];
-
-        if (word1[i] == word2[j])
-            return dp[i][j] = 1 + f(i - 1, j - 1, word1, word2, dp);
-        else
-            return dp[i][j] = max(f(i, j - 1, word1, word2, dp),
-                                  f(i - 1, j, word1, word2, dp));
-    }
-
     int minDistance(string word1, string word2) {
-        int n = word1.size();
-        int m = word2.size();
-
-        vector<vector<int>> dp(n, vector<int>(m, -1));
-        int count = f(n - 1, m - 1, word1, word2, dp);
-
-        return n - count + m - count;
+        int m = word1.size();
+        int n = word2.size();
+        vector<int> dp1(n+1,0),dp2(n+1,0);
+        for(int i = 1;i<=m;i++){
+            for(int j = 1;j<=n;j++){
+                dp2[j] = max(dp1[j],dp2[j-1]);
+                if(word1[i-1] == word2[j-1])
+                    dp2[j] = max(dp2[j],dp1[j-1]+1);
+            }
+            dp1 = dp2;
+        }
+        return m+n - 2* dp2[n];
     }
 };
