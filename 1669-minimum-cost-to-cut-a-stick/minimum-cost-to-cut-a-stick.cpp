@@ -18,7 +18,18 @@ public:
         int m = a.size();
         a.push_back(n);
         a.insert(a.begin(), 0);
-        vector<vector<int>> dp(m + 2, vector<int>(m + 2, -1));
-        return f(1, m, a, dp);
+        vector<vector<int>> dp(m + 2, vector<int>(m + 2, 0));
+        for(int i=m;i>=1;i-- ){
+            for(int j=i;j<=m;j++){
+                int mi = 1e9;
+                for (int k = i; k <= j; k++) {
+                    int st =
+                        (a[j + 1] - a[i - 1]) + dp[i][k-1] + dp[k+1][j];
+                    mi = min(st, mi);
+                }
+                dp[i][j]=mi;
+            }
+        }
+        return dp[1][m];
     }
 };
